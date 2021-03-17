@@ -1,5 +1,7 @@
 package repository
 
+import "database/sql"
+
 type Authorization interface {
 
 }
@@ -18,6 +20,10 @@ type Repository struct {
 	TodoItem
 }
 
-func NewRepository() *Repository {
+func NewRepository(db *sql.DB) *Repository {
 	return &Repository{}
 }
+
+// TODO: stmt, err := db.Prepare("INSERT table SET unique_id=? ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)")
+//		 res, err := stmt.Exec(unique_id)
+//		 lid, err := res.LastInsertId()
