@@ -1,9 +1,12 @@
 package repository
 
-import "database/sql"
+import (
+	"github.com/jmoiron/sqlx"
+	"todo_app_api"
+)
 
 type Authorization interface {
-
+	CreateUser(user todo.User) (int, error)
 }
 
 type TodoList interface {
@@ -20,8 +23,10 @@ type Repository struct {
 	TodoItem
 }
 
-func NewRepository(db *sql.DB) *Repository {
-	return &Repository{}
+func NewRepository(db *sqlx.DB) *Repository {
+	return &Repository{
+		Authorization: NewAuthPostgres(db),
+	}
 }
 
 // TODO: stmt, err := db.Prepare("INSERT table SET unique_id=? ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)")
